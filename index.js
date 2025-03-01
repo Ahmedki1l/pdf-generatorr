@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 app.post('/generateInvoice', async (req, res) => {
     try {
-        const { htmlContent, orderId, bucket = "phase2anaostori" } = req.body;
+        const { htmlContent, orderId, bucket = process.env.AWS_BUCKET } = req.body;
         
         // Launch Puppeteer with no-sandbox for server environments
         const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
