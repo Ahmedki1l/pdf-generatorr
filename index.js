@@ -42,7 +42,6 @@ app.post('/generateInvoice', async (req, res) => {
         };
 
         const data = await s3.upload(params).promise();
-        console.log('Successful upload:', data.Location);
         res.status(200).json({ success: true, location: data.Location });
     } catch (err) {
         console.error('Error generating/uploading invoice:', err);
