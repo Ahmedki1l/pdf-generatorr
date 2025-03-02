@@ -1,0 +1,18 @@
+service: invoice-generator
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: eu-central-1
+  environment:
+    AWS_BUCKET: phase2anaostori
+
+functions:
+  generateInvoice:
+    handler: handler.generateInvoice
+    layers:
+      - arn:aws:lambda:eu-central-1:764866452798:layer:chrome-aws-lambda:27
+    events:
+      - http:
+          path: generateInvoice
+          method: post
