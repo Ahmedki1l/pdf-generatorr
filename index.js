@@ -18,26 +18,15 @@ app.post('/generateInvoice', async (req, res) => {
     let browser;
     try {
         const { htmlContent, orderId, bucket = process.env.AWS_BUCKET } = req.body;
-        
-        // Check if we're running in a serverless environment (like Vercel)
-        if (process.env.VERCEL_ENV) {
-            // Use chrome-aws-lambda for serverless environments
-            const chromium = require('chrome-aws-lambda');
-            browser = await puppeteer.launch({
-                args: chromium.args,
-                executablePath: await chromium.executablePath,
-                headless: chromium.headless,
-            });
-        } else {
-            // Local development: use Puppeteer's bundled Chromium
-            browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-        }
-        
+
+        // Local development: use Puppeteer's bundled Chromium
+        browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+
         const page = await browser.newPage();
         // Wait until network is idle so that external CSS/fonts are loaded
         await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
         const buffer = await page.pdf({ format: 'A4', printBackground: true });
-        
+
         await browser.close();
 
         const params = {
