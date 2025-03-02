@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const AWS = require('aws-sdk');
 const bodyParser = require('body-parser');
@@ -7,9 +6,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
+    accessKeyId: "AKIA5IUPQWCFCEJK5O5M",
+    secretAccessKey: "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",
+    region: "eu-central-1"
 });
 const s3 = new AWS.S3();
 app.use(bodyParser.json());
@@ -17,7 +16,7 @@ app.use(bodyParser.json());
 app.post('/generateInvoice', async (req, res) => {
     let browser;
     try {
-        const { htmlContent, orderId, bucket = process.env.AWS_BUCKET } = req.body;
+        const { htmlContent, orderId, bucket = "phase2anaostori" } = req.body;
 
         // Local development: use Puppeteer's bundled Chromium
         browser = await puppeteer.launch({ args: ['--no-sandbox'] });
